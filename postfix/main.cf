@@ -1,0 +1,26 @@
+compatibility_level = 3.9
+
+# Set empty for no logs. If you want logs, use /var/log/mail.log
+maillog_file =
+
+# Use virtual mapping instead of matching recipients with local users
+virtual_alias_maps = hash:/etc/postfix/virtual
+
+# Server identity (set by entrypoint.sh)
+myhostname = POSTFIX_HOSTNAME
+mydomain = POSTFIX_DOMAIN
+
+# Domain appended to locally-posted mail
+myorigin = /etc/mailname
+
+# Accept mail for these domains as final destination
+mydestination = localhost, $mydomain
+
+# Accept connections on all network interfaces
+inet_interfaces = all
+
+# Deliver to PostgreSql instead of /var/mail
+mailbox_command = python3 /usr/local/bin/deliver.py
+
+# SMTP greeting banner (myhostname required by RFC)
+smtpd_banner = $myhostname ESMTP $mail_name (Debian)

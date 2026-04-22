@@ -1,0 +1,37 @@
+services:
+  postfix:
+    build: ./postfix
+    ports:
+      - "25:25"
+    environment:
+      - POSTFIX_DOMAIN=${POSTFIX_DOMAIN}
+      - POSTFIX_HOSTNAME=${POSTFIX_HOSTNAME}
+    depends_on:
+      - postgres
+
+  postgres:
+    build: ./postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - PGTZ=UTC
+      - TZ=UTC
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+        test: ["CMD", "pg_isready"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+  ktor:
+      image: tempmail:latest
+      ports:
+        - "127.0.0.1:8080:8080"
+      environment:
+        - JWT_SECRET=${JWT_SECRET}
+        - POSTFIX_DOMAIN=${POSTFIX_DOMAIN}
+      depends_on:
+        postgres:
+          condition: service_healthy
+
+volumes:
+  postgres_data:
