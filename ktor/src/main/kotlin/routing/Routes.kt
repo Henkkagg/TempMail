@@ -5,6 +5,7 @@ import createToken
 import domain.GenerateEmailAddress
 import domain.SubscriptionService
 import getEmailIfValidJWT
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
@@ -57,6 +58,12 @@ fun Application.configureRouting() {
                 if (address == null) {
                     val generateEmailAddress: GenerateEmailAddress by inject()
                     address = generateEmailAddress()
+
+                    //All unique addresses exhausted
+                    if (address == null) {
+                        call.respond(HttpStatusCode.ServiceUnavailable)
+                        return@get
+                    }
                 }
                 val token = createToken(address)
                 call.response.cookies.append("token", token, httpOnly = true)

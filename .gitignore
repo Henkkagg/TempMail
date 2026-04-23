@@ -1,0 +1,13 @@
+ktor/.gradle
+ktor/.idea
+ktor/.kotlin
+ktor/build
+ktor/src/main/resources/wordlist1.txt
+ktor/src/main/resources/wordlist2.txt
+ktor/src/main/resources/static
+
+react/.env
+react/dist
+react/node_modules
+
+.env

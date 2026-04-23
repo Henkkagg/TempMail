@@ -19,7 +19,7 @@ class GenerateEmailAddress(
         2.toDouble().pow(exponent).toLong()
     }
 
-    suspend operator fun invoke(): String {
+    suspend operator fun invoke(): String? {
         
         //Intentional non-optimal solution. It's hard to use the exactly needed modulo for LCG,
         //but much easier to use a power of two, which is too large. This solution results in
@@ -31,13 +31,16 @@ class GenerateEmailAddress(
             value = databaseRepository.getNextLcgValue(modulo)
         }
 
+        //LCG value is started from 1. If 1 is ever encountered here, it means that all unique addresses are exhausted
+        if (value == 1L) return null
+
         val fullThousands = value / 1000
         val numberSuffix = value.mod(1000) - 1
 
         val aIndex = (fullThousands / wordLists.words2.size).toInt()
         val nIndex = fullThousands.mod(wordLists.words2.size)
-        val tld = System.getenv("POSTFIX_DOMAIN")
+        val domain = System.getenv("POSTFIX_DOMAIN")
 
-        return "${wordLists.words1[aIndex]}.${wordLists.words2[nIndex]}$numberSuffix@$tld"
+        return "${wordLists.words1[aIndex]}.${wordLists.words2[nIndex]}$numberSuffix@$domain"
     }
 }
