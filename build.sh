@@ -9,6 +9,6 @@ cp adjectives.txt ktor/src/main/resources
 cp nouns.txt ktor/src/main/resources
 
 grep '^VITE_' .env > react/.env
-cd react && npm run build
+cd react && npm install && npm run build
 cp -r dist/ ../ktor/src/main/resources/static/
 cd ../ktor && ./gradlew publishImageToLocalRegistry
