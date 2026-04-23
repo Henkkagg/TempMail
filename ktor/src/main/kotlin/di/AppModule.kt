@@ -15,8 +15,8 @@ import javax.sql.DataSource
 val appModule = module {
     single<WordLists> {
         WordLists(
-            object {}.javaClass.getResourceAsStream("/adjectives.txt")!!.bufferedReader().readLines(),
-            object {}.javaClass.getResourceAsStream("/nouns.txt")!!.bufferedReader().readLines()
+            object {}.javaClass.getResourceAsStream("/wordlist1.txt")!!.bufferedReader().readLines(),
+            object {}.javaClass.getResourceAsStream("/wordlist2.txt")!!.bufferedReader().readLines()
         )
     }
     single<DataSource> { createDbConnection() }

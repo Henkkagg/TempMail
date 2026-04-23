@@ -2,11 +2,11 @@
 
 #Clear old frontend stuff
 rm -rf ktor/src/main/resources/static
-rm ktor/src/main/resources/adjectives.txt
-rm ktor/src/main/resources/nouns.txt
+rm ktor/src/main/resources/wordlist1.txt
+rm ktor/src/main/resources/wordlist2.txt
 
-cp adjectives.txt ktor/src/main/resources
-cp nouns.txt ktor/src/main/resources
+cp wordlist1.txt ktor/src/main/resources
+cp wordlist2.txt ktor/src/main/resources
 
 grep '^VITE_' .env > react/.env
 cd react && npm install && npm run build

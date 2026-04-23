@@ -11,7 +11,7 @@ class GenerateEmailAddress(
 ) {
 
     private val largestAcceptedValue: Long by lazy {
-        wordLists.adjectives.size * wordLists.nouns.size * 1000L
+        wordLists.words1.size * wordLists.words2.size * 1000L
     }
 
     private val modulo: Long by lazy {
@@ -34,10 +34,10 @@ class GenerateEmailAddress(
         val fullThousands = value / 1000
         val numberSuffix = value.mod(1000) - 1
 
-        val aIndex = (fullThousands / wordLists.nouns.size).toInt()
-        val nIndex = fullThousands.mod(wordLists.nouns.size)
+        val aIndex = (fullThousands / wordLists.words2.size).toInt()
+        val nIndex = fullThousands.mod(wordLists.words2.size)
         val tld = System.getenv("POSTFIX_DOMAIN")
 
-        return "${wordLists.adjectives[aIndex]}.${wordLists.nouns[nIndex]}$numberSuffix@$tld"
+        return "${wordLists.words1[aIndex]}.${wordLists.words2[nIndex]}$numberSuffix@$tld"
     }
 }
