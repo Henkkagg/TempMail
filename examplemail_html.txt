@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Test email</h1>
+<p>This is a <strong>test email</strong> with some HTML formatting.</p>
+<p>It contains a link: <a href="https://example.com">example.com</a></p>
+<p>Non-standard characters: äöå ÄÖÅ</p>
+<ul>
+    <li>Item one</li>
+    <li>Item two</li>
+    <li>Item three</li>
+</ul>
+</body>
+</html>

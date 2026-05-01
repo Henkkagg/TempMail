@@ -23,14 +23,23 @@ sender = decode_field(message["From"])
 subject = decode_field(message["Subject"])
 
 def extract_body(message):
+    html_body = None
+    plain_body = None
+
     if message.is_multipart():
         for part in message.walk():
             content_type = part.get_content_type()
             disposition = part.get("Content-Disposition", "")
-            if content_type == "text/plain" and "attachment" not in disposition:
-                return part.get_payload(decode=True).decode(part.get_content_charset() or "utf-8")
+            if "attachment" in disposition:
+                continue
+            if content_type == "text/html" and html_body is None:
+                html_body = part.get_payload(decode=True).decode(part.get_content_charset() or "utf-8")
+            elif content_type == "text/plain" and plain_body is None:
+                plain_body = part.get_payload(decode=True).decode(part.get_content_charset() or "utf-8")
     else:
-        return message.get_payload(decode=True).decode(message.get_content_charset() or "utf-8").rstrip("\n")
+        plain_body = message.get_payload(decode=True).decode(message.get_content_charset() or "utf-8").rstrip("\n")
+
+    return html_body if html_body is not None else plain_body
 
 body = extract_body(message)
 connection = psycopg.connect(

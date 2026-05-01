@@ -2,6 +2,7 @@ import { useState } from "react"
 import InfoRow from "./InfoRow"
 import useEventStream from "../api/useEventStream"
 import ServiceInfo from "./ServiceInfo"
+import DOMPurify from 'dompurify'
 
 function Box() {
 
@@ -17,19 +18,6 @@ function Box() {
         setCopiedRecently(true)
         setTimeout(() => setCopiedRecently(false), 2000)
     }
-
-    function renderBodyWithLinks(body: string) {
-    const urlRegex = /(https?:\/\/[^\s]+)/g
-    const parts = body.split(urlRegex)
-    
-    return parts.map((part, index) => {
-        if (urlRegex.test(part)) {
-            return <a key={index} href={part} target="_blank" rel="noreferrer" className="text-blue-500 underline">{part}</a>
-        }
-        return part
-    })
-}
-
 
     const { emailAddress, emails } = useEventStream()
 
@@ -80,7 +68,7 @@ function Box() {
                 <div className="flex-1 bg-background px-1 whitespace-pre-wrap overflow-y-auto rounded-2xl">
                     {emails.length === 0
                         ? <ServiceInfo emailAddress={emailAddress}></ServiceInfo> 
-                        : renderBodyWithLinks(emails[selectedMail].body)
+                        : <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(emails[selectedMail].body) }} />
                     }
                 </div>
             </div>

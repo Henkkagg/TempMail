@@ -1,0 +1,9 @@
+Test email
+
+This is a test email with some formatting.
+It contains a link: https://example.com
+Non-standard characters: äöå ÄÖÅ
+
+- Item one
+- Item two
+- Item three
