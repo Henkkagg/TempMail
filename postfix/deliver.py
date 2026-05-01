@@ -2,6 +2,7 @@ import os
 import sys
 import email
 import psycopg
+from email.utils import parseaddr
 from email.header import decode_header
 
 def decode_field(field):
@@ -19,7 +20,7 @@ def decode_field(field):
 rawEmail = sys.stdin.read()
 message = email.message_from_string(rawEmail)
 recipient = decode_field(message["To"])
-sender = decode_field(message["From"])
+_, sender = parseaddr(decode_field(message["From"]))
 subject = decode_field(message["Subject"])
 
 def extract_body(message):
